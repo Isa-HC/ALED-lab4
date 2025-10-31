@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import es.upm.dit.aled.lab3.FASTAException;
+
 /**
  * Callable task that performs a linear search over a specific section of a
  * byte[] array containing a genome. It looks for a specific pattern and returns
@@ -47,8 +49,19 @@ public class FASTASearchCallable implements Callable<List<Integer>> {
 	 */
 	@Override
 	public List<Integer> call() throws Exception {
-		// TODO
-		return null;
+		
+		List<Integer> secCoincidente = new ArrayList <> (); 
+		
+		for (int i = 0; i < content.length; i ++) 
+			try {
+				if (compareImproved (pattern, i) == true)
+					secCoincidente.add(i);
+			} catch (FASTAException e) {
+				// TODO Auto-generated catch block
+			}
+
+			return secCoincidente;
+		
 	}
 
 	/*
