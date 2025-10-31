@@ -28,7 +28,7 @@ public class Simulation {
 		}
 	}
 
-	/**
+	/**>>>AAAAAA	aaa																					>>>>>>>ZZZZZZZZZZZZZZZZ
 	 * Simulates an emergency room from a provided file
 	 */
 	public Simulation(String file) throws FileNotFoundException {
