@@ -47,6 +47,9 @@ public class FASTASearchCallable implements Callable<List<Integer>> { //devolver
 	 *         pattern in the segment of content to be searched.
 	 */
 	@Override
+	
+	//quiero que cada hebra lo que haga es coger un cacho del genoma y vaya comparando, y si encuentra algo, que lo
+	//meta en la lista secCoincidente que me he creado. 
 	public List<Integer> call() throws Exception {
 		
 		List<Integer> secCoincidente = new ArrayList <> (); 
