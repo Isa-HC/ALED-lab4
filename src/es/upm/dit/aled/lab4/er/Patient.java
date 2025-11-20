@@ -144,7 +144,7 @@ public class Patient extends Thread {
 	 */
 	private void attendedAtLocation() {
 		try {
-			sleep (location.getTime ());
+			sleep (location.getTime());
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -164,9 +164,7 @@ public class Patient extends Thread {
 			this.attendedAtLocation();
 			//avanza a la siguiente
 			this.advanceProtocol();
-	
 		}
-		this.attendedAtLocation();
 		EmergencyRoomGUI.getInstance().removePatient(this);
 		
 	}

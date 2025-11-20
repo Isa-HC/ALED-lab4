@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-import es.upm.dit.aled.lab3.FASTAException;
-
 /**
  * Callable task that performs a linear search over a specific section of a
  * byte[] array containing a genome. It looks for a specific pattern and returns
@@ -14,7 +12,7 @@ import es.upm.dit.aled.lab3.FASTAException;
  * @author rgarciacarmona
  *
  */
-public class FASTASearchCallable implements Callable<List<Integer>> {
+public class FASTASearchCallable implements Callable<List<Integer>> { //devolverá listas de Integer 
 
 	private FASTAReaderThreads reader;
 	private int lo;
@@ -32,11 +30,12 @@ public class FASTASearchCallable implements Callable<List<Integer>> {
 	 * @param hi      The higher bound of the segment of content to be searched.
 	 * @param pattern The pattern to be found.
 	 */
-	public FASTASearchCallable(FASTAReaderThreads reader, int lo, int hi, byte[] pattern) {
+	public FASTASearchCallable(FASTAReaderThreads reader, int lo, int hi, byte[] pattern) { //recibo un objeto en cuyo interior
+		//está el array sobre el qué vamos a buscar. Accedemos a él mediante getContent(). 
 		this.reader = reader; 
-		this.lo = lo; 
-		this.hi = hi;
-		this.pattern = pattern; 
+		this.lo = lo; //desde 
+		this.hi = hi; //hasta 
+		this.pattern = pattern; //patrón que estás buscando 
 	}
 
 	/**
@@ -52,16 +51,15 @@ public class FASTASearchCallable implements Callable<List<Integer>> {
 		
 		List<Integer> secCoincidente = new ArrayList <> (); 
 		
-		for (int i = 0; i < content.length; i ++) 
+		for (int i = lo; i < hi; i ++) {
 			try {
-				if (compareImproved (pattern, i) == true)
+				if (compare (pattern, i))
 					secCoincidente.add(i);
 			} catch (FASTAException e) {
-				// TODO Auto-generated catch block
+				break; 
 			}
-
+		}
 			return secCoincidente;
-		
 	}
 
 	/*

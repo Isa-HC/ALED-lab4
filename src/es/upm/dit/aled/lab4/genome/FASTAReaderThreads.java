@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -115,8 +116,47 @@ public class FASTAReaderThreads {
 	 *         pattern in the data.
 	 */
 	public List<Integer> search(byte[] pattern) {
-		// TODO
-		return null;
+		List<Integer> results = new ArrayList<Integer>();
+		
+		//número de cores que tiene mi ordenador (en mi caso 8)
+		int cores = Runtime.getRuntime().availableProcessors();
+		//creo objeto de tipo executor con tantos esclavos como cores (threads)
+		ExecutorService executor = Executors.newFixedThreadPool(cores);
+		
+		//array de futuras listas de enteros con tantos huequitos como cores (cada esclavo (thread) volcará su
+		//resultado en una casilla)
+		Future<List<Integer>>[] futures = new Future [cores]; 
+		
+		//reparto de cada cacho que se el asigna a cada hebra
+		int tamano = content.length / cores; 
+		int lo = 0;
+		int hi = 0 + tamano;
+		
+//----------------------------------------------------------------------------------------------------------
+		
+		for (int i = 0; i < cores; i++) {
+			//creo objeto de la clase Callable que he programado antes 
+			Callable<List<Integer>> task = new FASTASearchCallable(this,lo, hi, pattern); 
+			futures[i] = executor.submit(task);
+			lo += tamano; 
+			hi += tamano;
+		}
+		//recojo los resultados 
+		for (int i = 0; i < futures.length; i++) { //se podría haber hecho con un for de los nuevos 
+				try {
+					results.addAll(futures[i].get());
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (ExecutionException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			
+		}
+		
+		executor.shutdown();
+		return results; 
 	}
 
 	public static void main(String[] args) {
